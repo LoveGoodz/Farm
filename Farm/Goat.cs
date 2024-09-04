@@ -8,31 +8,19 @@ namespace Farm
 {
     public class Goat : Animal
     {
-        public int MilkProductionPerDay { get; private set; } // Günlük süt üretimi
-
-        public Goat()
+        public Goat(string name, int age) : base(name, age, 14, 0, 80, 40, 15)
         {
-            Type = "Goat";
-            Lifespan = 15;
-            MilkProductionPerDay = 12;
         }
 
         public override void ProduceProduct()
         {
-            if (Age >= 4)
+            if (Age >= 3)
             {
-                int yearsProducing = Age - 4;
-                MilkProductionPerDay = Math.Max(12 - yearsProducing, 0); // Süt üretimi, yaşa bağlı olarak azalır
+                double dailyProduction = 15 - (Age - 3);
+                ProducedProduct += dailyProduction;
+                if (ProducedProduct > MaxProduct)
+                    ProducedProduct = MaxProduct;
             }
-            else
-            {
-                MilkProductionPerDay = 0; // Keçi 4 yaşından küçükse süt üretimi yok
-            }
-        }
-
-        public override int CalculateAnnualProduction()
-        {
-            return MilkProductionPerDay * 365;
         }
     }
 }

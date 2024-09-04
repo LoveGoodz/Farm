@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Farm", "Farm\Farm.csproj", "{AA7EE73A-064B-48F6-A627-EEFC84DE7DBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Farm", "Farm\Farm.csproj", "{AA7EE73A-064B-48F6-A627-EEFC84DE7DBB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F66A2FB7-6376-4495-8387-44319558A462}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Downloads\chicken.png = ..\..\..\Downloads\chicken.png
+		..\..\..\Downloads\cow.png = ..\..\..\Downloads\cow.png
+		..\..\..\Downloads\goat.png = ..\..\..\Downloads\goat.png
+		..\..\..\Downloads\sheep.png = ..\..\..\Downloads\sheep.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

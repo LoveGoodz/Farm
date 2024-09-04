@@ -6,18 +6,29 @@ using System.Threading.Tasks;
 
 namespace Farm
 {
-    public abstract class Animal
+    public class Animal
     {
-        public int Age { get; set; } 
-        public string Type { get; set; } 
-        public int Lifespan { get; set; } 
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public int Lifespan { get; set; }
+        public double ProducedProduct { get; set; }
+        public double MaxProduct { get; set; }
+        public double Value { get; set; }
+        public double ProductPrice { get; set; }
 
-        // Ürün üretim hesaplamasını her hayvan için özelleştirilmiş olarak yapacak metod
-        public abstract void ProduceProduct();
+        public Animal(string name, int age, int lifespan, double producedProduct, double maxProduct, double value, double productPrice)
+        {
+            Name = name;
+            Age = age;
+            Lifespan = lifespan;
+            ProducedProduct = producedProduct;
+            MaxProduct = maxProduct;
+            Value = value;
+            ProductPrice = productPrice;
+        }
 
-        // Yıllık üretimi hesaplayacak metod
-        public abstract int CalculateAnnualProduction();
+        public virtual void ProduceProduct()
+        {
+        }
     }
-
-
 }
