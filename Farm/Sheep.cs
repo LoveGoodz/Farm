@@ -8,19 +8,18 @@ namespace Farm
 {
     public class Sheep : Animal
     {
-        public Sheep(string name, int age) : base(name, age, 10, 0, 80, 30, 15)
+        public Sheep(string name, int age) : base(name, age, 10, 0, 30, 15)
         {
+            MaxProduct = 10;
         }
 
         public override void ProduceProduct()
         {
             if (Age >= 2)
             {
-                double dailyProduction = 10 - (Age - 2);
-                ProducedProduct += dailyProduction;
-                if (ProducedProduct > MaxProduct)
-                    ProducedProduct = MaxProduct;
+                ProducedProduct += Math.Max(0, 10 - (Age - 2));
             }
         }
     }
+
 }

@@ -32,14 +32,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             cmbAnimalType = new ComboBox();
             txtAge = new TextBox();
-            btnAdd = new Button();
+            btnAddAnimal = new Button();
             imageListAnimals = new ImageList(components);
             lblBalance = new Label();
             btnSell = new Button();
             dgvAnimals = new DataGridView();
+            progressBar1 = new ProgressBar();
+            progressBar2 = new ProgressBar();
             colIcon = new DataGridViewImageColumn();
-            colAgeProgress = new DataGridViewTextBoxColumn();
-            colProductProgress = new DataGridViewTextBoxColumn();
+            LifeSpanProgress = new DataGridViewTextBoxColumn();
+            ProductProgress = new DataGridViewTextBoxColumn();
+            SellButton = new DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)dgvAnimals).BeginInit();
             SuspendLayout();
             // 
@@ -62,15 +65,15 @@
             txtAge.Size = new Size(100, 23);
             txtAge.TabIndex = 1;
             // 
-            // btnAdd
+            // btnAddAnimal
             // 
-            btnAdd.Location = new Point(354, 12);
-            btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(120, 23);
-            btnAdd.TabIndex = 2;
-            btnAdd.Text = "Add Animal";
-            btnAdd.UseVisualStyleBackColor = true;
-            btnAdd.Click += btnAdd_Click;
+            btnAddAnimal.Location = new Point(354, 12);
+            btnAddAnimal.Name = "btnAddAnimal";
+            btnAddAnimal.Size = new Size(120, 23);
+            btnAddAnimal.TabIndex = 2;
+            btnAddAnimal.Text = "Add Animal";
+            btnAddAnimal.UseVisualStyleBackColor = true;
+            btnAddAnimal.Click += btnAdd_Click;
             // 
             // imageListAnimals
             // 
@@ -103,36 +106,59 @@
             // dgvAnimals
             // 
             dgvAnimals.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvAnimals.Columns.AddRange(new DataGridViewColumn[] { colIcon, colAgeProgress, colProductProgress });
+            dgvAnimals.Columns.AddRange(new DataGridViewColumn[] { colIcon, LifeSpanProgress, ProductProgress, SellButton });
             dgvAnimals.Location = new Point(12, 59);
             dgvAnimals.Name = "dgvAnimals";
             dgvAnimals.Size = new Size(600, 400);
             dgvAnimals.TabIndex = 8;
+            dgvAnimals.CellClick += dgvAnimals_CellClick;
+            dgvAnimals.CellPainting += dgvAnimals_CellPainting;
+            // 
+            // progressBar1
+            // 
+            progressBar1.Location = new Point(251, 506);
+            progressBar1.Name = "progressBar1";
+            progressBar1.Size = new Size(100, 23);
+            progressBar1.TabIndex = 9;
+            // 
+            // progressBar2
+            // 
+            progressBar2.Location = new Point(484, 506);
+            progressBar2.Name = "progressBar2";
+            progressBar2.Size = new Size(100, 23);
+            progressBar2.TabIndex = 10;
             // 
             // colIcon
             // 
             colIcon.HeaderText = "Icon";
             colIcon.Name = "colIcon";
             // 
-            // colAgeProgress
+            // LifeSpanProgress
             // 
-            colAgeProgress.HeaderText = "Age";
-            colAgeProgress.Name = "colAgeProgress";
+            LifeSpanProgress.HeaderText = "LifeSpan Progress";
+            LifeSpanProgress.Name = "LifeSpanProgress";
             // 
-            // colProductProgress
+            // ProductProgress
             // 
-            colProductProgress.HeaderText = "Product";
-            colProductProgress.Name = "colProductProgress";
+            ProductProgress.HeaderText = "Product Progress";
+            ProductProgress.Name = "ProductProgress";
+            // 
+            // SellButton
+            // 
+            SellButton.HeaderText = "Sell";
+            SellButton.Name = "SellButton";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(784, 561);
+            Controls.Add(progressBar2);
+            Controls.Add(progressBar1);
             Controls.Add(dgvAnimals);
             Controls.Add(btnSell);
             Controls.Add(lblBalance);
-            Controls.Add(btnAdd);
+            Controls.Add(btnAddAnimal);
             Controls.Add(txtAge);
             Controls.Add(cmbAnimalType);
             Name = "Form1";
@@ -146,14 +172,17 @@
 
         private ComboBox cmbAnimalType;
         private TextBox txtAge;
-        private Button btnAdd;
+        private Button btnAddAnimal;
         private Button generateReportButton;
         private ImageList imageListAnimals;
         private Label lblBalance;
         private Button btnSell;
         private DataGridView dgvAnimals;
+        private ProgressBar progressBar1;
+        private ProgressBar progressBar2;
         private DataGridViewImageColumn colIcon;
-        private DataGridViewTextBoxColumn colAgeProgress;
-        private DataGridViewTextBoxColumn colProductProgress;
+        private DataGridViewTextBoxColumn LifeSpanProgress;
+        private DataGridViewTextBoxColumn ProductProgress;
+        private DataGridViewButtonColumn SellButton;
     }
 }

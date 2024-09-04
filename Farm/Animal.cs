@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Farm
 {
-    public class Animal
+    public abstract class Animal
     {
         public string Name { get; set; }
         public int Age { get; set; }
@@ -16,19 +16,21 @@ namespace Farm
         public double Value { get; set; }
         public double ProductPrice { get; set; }
 
-        public Animal(string name, int age, int lifespan, double producedProduct, double maxProduct, double value, double productPrice)
+        public Animal(string name, int age, int lifespan, double maxProduct, double value, double productPrice)
         {
             Name = name;
             Age = age;
             Lifespan = lifespan;
-            ProducedProduct = producedProduct;
             MaxProduct = maxProduct;
             Value = value;
             ProductPrice = productPrice;
+            ProducedProduct = 0;
         }
 
         public virtual void ProduceProduct()
         {
+            // Alt sınıflar tarafından implement edilecek
         }
     }
+
 }
