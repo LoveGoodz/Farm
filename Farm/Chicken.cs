@@ -8,19 +8,25 @@ namespace Farm
 {
     public class Chicken : Animal
     {
-        public Chicken(string name, int age) : base(name, age, 6, 0, 20, 5)
+        public Chicken(string name, int age) : base(name, age, 6, 50, 20, 5) // MaxProduct 50, Ürün başı fiyat 5
         {
-            MaxProduct = 5;
         }
 
         public override void ProduceProduct()
         {
-            if (Age >= 1)
+            if (ProducedProduct < MaxProduct)
             {
-                ProducedProduct += Math.Max(0, 5 - (Age - 1));
+                ProducedProduct += 5; // Her gün 5 yumurta üretilecek (10 saniyede bir)
+            }
+
+            // Depolama kapasitesi sınırını aşmayalım
+            if (ProducedProduct > MaxProduct)
+            {
+                ProducedProduct = MaxProduct;
             }
         }
     }
+
 
 }
 

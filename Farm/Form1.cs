@@ -4,15 +4,19 @@ namespace Farm
     {
         private List<Animal> animals = new List<Animal>();
         private double balance = 140;
+        private int totalDaysPassed = 0;
         public Form1()
         {
             InitializeComponent();
+            InitializeDataGridView();
             LoadAnimalTypes();
             UpdateBalanceLabel();
 
             dgvAnimals.CellPainting += dgvAnimals_CellPainting;
             dgvAnimals.CellClick += dgvAnimals_CellClick;
 
+            timer1.Interval = 10000; // Her 10 saniyede bir gün geçmesi için interval 10,000 ms
+            timer1.Tick += timer1_Tick;
             timer1.Start();
         }
 
@@ -20,7 +24,46 @@ namespace Farm
         {
 
         }
+        private void InitializeDataGridView()
+        {
+            // Hayvan türü için sütun ekleyin
+            var typeColumn = new DataGridViewTextBoxColumn();
+            typeColumn.Name = "Type";
+            typeColumn.HeaderText = "Animal Type";
+            typeColumn.Width = 100; // Sütun geniþliðini ayarlayýn
+            dgvAnimals.Columns.Add(typeColumn);
 
+            // Ýkon sütununu ekleyin ve geniþliðini ayarlayýn
+            var iconColumn = new DataGridViewImageColumn();
+            iconColumn.Name = "Icon";
+            iconColumn.HeaderText = "Icon";
+            iconColumn.Width = 60; // Ýkon sütun geniþliði
+            iconColumn.ImageLayout = DataGridViewImageCellLayout.Zoom; // Ýkonun sýðmasý için Zoom yapýn
+            dgvAnimals.Columns.Add(iconColumn);
+
+            // Yaþ ilerleme sütunu
+            var ageProgressColumn = new DataGridViewTextBoxColumn();
+            ageProgressColumn.Name = "LifeSpanProgress";
+            ageProgressColumn.HeaderText = "Age Progress";
+            ageProgressColumn.Width = 100; // Sütun geniþliði
+            dgvAnimals.Columns.Add(ageProgressColumn);
+
+            // Ürün ilerleme sütunu
+            var productProgressColumn = new DataGridViewTextBoxColumn();
+            productProgressColumn.Name = "ProductProgress";
+            productProgressColumn.HeaderText = "Product Progress";
+            productProgressColumn.Width = 100; // Sütun geniþliði
+            dgvAnimals.Columns.Add(productProgressColumn);
+
+            // Satýþ butonu sütunu
+            var sellButtonColumn = new DataGridViewButtonColumn();
+            sellButtonColumn.Name = "Sell";
+            sellButtonColumn.HeaderText = "Sell Product";
+            sellButtonColumn.Text = "Sell";
+            sellButtonColumn.UseColumnTextForButtonValue = true;
+            sellButtonColumn.Width = 80; // Sütun geniþliði
+            dgvAnimals.Columns.Add(sellButtonColumn);
+        }
         private void LoadAnimalTypes()
         {
             cmbAnimalType.Items.Add("Cow");
@@ -34,16 +77,36 @@ namespace Farm
             int age;
             if (int.TryParse(txtAge.Text, out age))
             {
-                Animal animal = CreateAnimal(cmbAnimalType.SelectedItem.ToString(), name, age);
-                if (animal != null)
+                double animalCost = 0;
+                string animalType = cmbAnimalType.SelectedItem.ToString();
+
+                switch (animalType)
                 {
-                    animals.Add(animal);
-                    UpdateAnimalGrid();
-                    txtAge.Clear();
+                    case "Cow": animalCost = 50; break;
+                    case "Goat": animalCost = 40; break;
+                    case "Sheep": animalCost = 30; break;
+                    case "Chicken": animalCost = 20; break;
+                }
+
+                if (balance >= animalCost)
+                {
+                    Animal animal = CreateAnimal(animalType, name, age);
+                    if (animal != null)
+                    {
+                        balance -= animalCost; // Hayvanýn ücretini bakiyeden düþ
+                        animals.Add(animal);
+                        UpdateAnimalGrid();
+                        UpdateBalanceLabel();
+                        txtAge.Clear();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid animal type selected.");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Invalid animal type selected.");
+                    MessageBox.Show("Insufficient balance to buy this animal.");
                 }
             }
             else
@@ -62,12 +125,19 @@ namespace Farm
                 default: return null;
             }
         }
+
         private void UpdateAnimalGrid()
         {
             dgvAnimals.Rows.Clear();
             foreach (var animal in animals)
             {
-                // Ýkon, yaþ ve ürün üretim bilgilerini içeren satýrlarý ekleyin.
+                int rowIndex = dgvAnimals.Rows.Add();
+                var row = dgvAnimals.Rows[rowIndex];
+
+                row.Cells["Type"].Value = animal.GetType().Name; // Hayvan türünü ekleyin
+                row.Cells["Icon"].Value = GetAnimalIcon(animal);
+                row.Cells["LifeSpanProgress"].Value = (int)((double)animal.Age / animal.Lifespan * 100);
+                row.Cells["ProductProgress"].Value = (int)((double)animal.ProducedProduct / animal.MaxProduct * 100);
             }
             UpdateBalanceLabel();
         }
@@ -75,6 +145,22 @@ namespace Farm
         {
             lblBalance.Text = $"Balance: {balance}";
         }
+
+        private Image GetAnimalIcon(Animal animal)
+        {
+            string basePath = AppDomain.CurrentDomain.BaseDirectory + "Properties\\";
+
+            // Hayvan türüne göre uygun ikon dosyasýný yükleyin
+            switch (animal)
+            {
+                case Cow _: return Image.FromFile(basePath + "cow.png");
+                case Goat _: return Image.FromFile(basePath + "goat.png");
+                case Sheep _: return Image.FromFile(basePath + "sheep.png");
+                case Chicken _: return Image.FromFile(basePath + "chicken.png");
+                default: return null;
+            }
+        }
+
 
         private void dgvAnimals_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
@@ -110,54 +196,71 @@ namespace Farm
 
                 if (animal != null)
                 {
+                    double sellThreshold = 0;
+                    double productPrice = 0;
+
                     if (animal is Cow || animal is Goat || animal is Sheep)
                     {
-                        if (animal.ProducedProduct >= 80)
-                        {
-                            balance += (animal.ProducedProduct / 80) * 15;
-                            animal.ProducedProduct %= 80;
-                            UpdateAnimalGrid();
-                        }
+                        sellThreshold = 100; // 100 litre süt için satýþ yapýlacak
+                        productPrice = (animal.ProducedProduct / 100) * 10; // 1 litre süt 0.5 para birimi
                     }
                     else if (animal is Chicken)
                     {
-                        if (animal.ProducedProduct >= 20)
-                        {
-                            balance += (animal.ProducedProduct / 20) * 5;
-                            animal.ProducedProduct %= 20;
-                            UpdateAnimalGrid();
-                        }
+                        sellThreshold = 25; // 25 yumurta için satýþ yapýlacak
+                        productPrice = (animal.ProducedProduct / 25) * 5; // 1 yumurta 0.25 para birimi
+                    }
+
+                    // Ürün miktarý satýþ eþiðine ulaþtýðýnda satýþ yap
+                    if (animal.ProducedProduct >= sellThreshold)
+                    {
+                        balance += productPrice; // Satýþ fiyatýný ekle
+                        animal.ProducedProduct -= sellThreshold; // Ürün miktarýný azalt
+                        UpdateAnimalGrid();
+                        UpdateBalanceLabel();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Not enough product to sell.");
                     }
                 }
-
-                UpdateBalanceLabel();
+                else
+                {
+                    MessageBox.Show("Animal not found or null.");
+                }
             }
         }
 
-        private int totalDaysPassed = 0;
-
         private void timer1_Tick(object sender, EventArgs e)
         {
-            totalDaysPassed += 5; // Her tick'te 5 gün geçiyor
+            totalDaysPassed += 1; // Her 10 saniyede bir gün simüle ediliyor
 
+            // Süt ve yumurta üretimi her gün (10 saniyede bir) yapýlacak
             foreach (var animal in animals.ToList())
             {
-                animal.Age += 5;
-                animal.ProduceProduct(); // Üretim sürecini güncelle
+                animal.ProduceProduct(); // Günlük üretim sürecini güncelle
 
-                // Yaþam süresi dolmuþ hayvanlarý kaldýr
-                if (animal.Age >= animal.Lifespan)
+                // Eðer 10 gün (100 saniye) geçtiyse, yaþlarý artýr
+                if (totalDaysPassed % 10 == 0)
                 {
-                    animals.Remove(animal);
+                    animal.Age += 1; // Her 10 günde bir yaþ ekleniyor (her 100 saniye)
+
+                    // Yaþam süresi dolan hayvanlarý kaldýr
+                    if (animal.Age >= animal.Lifespan)
+                    {
+                        animals.Remove(animal);
+                        Console.WriteLine($"{animal.Name} removed (Age: {animal.Age})");
+                    }
                 }
             }
 
             UpdateAnimalGrid();
             UpdateBalanceLabel();
 
-            if (totalDaysPassed >= 25)
+            // 5 dakikalýk simülasyon (300 saniye) tamamlandýðýnda durdur
+            if (totalDaysPassed >= 300) // 300 saniye = 30 gün = 1 ay simülasyonu
             {
-                timer1.Stop(); // 25 gün tamamlandýðýnda simülasyonu durdur
+                timer1.Stop();
+                Console.WriteLine("Simulation complete: 5 minutes passed.");
             }
         }
     }
