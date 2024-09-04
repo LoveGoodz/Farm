@@ -12,6 +12,8 @@ namespace Farm
 
             dgvAnimals.CellPainting += dgvAnimals_CellPainting;
             dgvAnimals.CellClick += dgvAnimals_CellClick;
+
+            timer1.Start();
         }
 
         private void animalTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -129,6 +131,33 @@ namespace Farm
                 }
 
                 UpdateBalanceLabel();
+            }
+        }
+
+        private int totalDaysPassed = 0;
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            totalDaysPassed += 5; // Her tick'te 5 gün geçiyor
+
+            foreach (var animal in animals.ToList())
+            {
+                animal.Age += 5;
+                animal.ProduceProduct(); // Üretim sürecini güncelle
+
+                // Yaþam süresi dolmuþ hayvanlarý kaldýr
+                if (animal.Age >= animal.Lifespan)
+                {
+                    animals.Remove(animal);
+                }
+            }
+
+            UpdateAnimalGrid();
+            UpdateBalanceLabel();
+
+            if (totalDaysPassed >= 25)
+            {
+                timer1.Stop(); // 25 gün tamamlandýðýnda simülasyonu durdur
             }
         }
     }

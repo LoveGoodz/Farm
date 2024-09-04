@@ -37,12 +37,13 @@
             lblBalance = new Label();
             btnSell = new Button();
             dgvAnimals = new DataGridView();
-            progressBar1 = new ProgressBar();
-            progressBar2 = new ProgressBar();
             colIcon = new DataGridViewImageColumn();
             LifeSpanProgress = new DataGridViewTextBoxColumn();
             ProductProgress = new DataGridViewTextBoxColumn();
             SellButton = new DataGridViewButtonColumn();
+            progressBar1 = new ProgressBar();
+            progressBar2 = new ProgressBar();
+            timer1 = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)dgvAnimals).BeginInit();
             SuspendLayout();
             // 
@@ -114,20 +115,6 @@
             dgvAnimals.CellClick += dgvAnimals_CellClick;
             dgvAnimals.CellPainting += dgvAnimals_CellPainting;
             // 
-            // progressBar1
-            // 
-            progressBar1.Location = new Point(251, 506);
-            progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(100, 23);
-            progressBar1.TabIndex = 9;
-            // 
-            // progressBar2
-            // 
-            progressBar2.Location = new Point(484, 506);
-            progressBar2.Name = "progressBar2";
-            progressBar2.Size = new Size(100, 23);
-            progressBar2.TabIndex = 10;
-            // 
             // colIcon
             // 
             colIcon.HeaderText = "Icon";
@@ -147,6 +134,25 @@
             // 
             SellButton.HeaderText = "Sell";
             SellButton.Name = "SellButton";
+            // 
+            // progressBar1
+            // 
+            progressBar1.Location = new Point(251, 506);
+            progressBar1.Name = "progressBar1";
+            progressBar1.Size = new Size(100, 23);
+            progressBar1.TabIndex = 9;
+            // 
+            // progressBar2
+            // 
+            progressBar2.Location = new Point(484, 506);
+            progressBar2.Name = "progressBar2";
+            progressBar2.Size = new Size(100, 23);
+            progressBar2.TabIndex = 10;
+            // 
+            // timer1
+            // 
+            timer1.Interval = 60000;
+            timer1.Tick += timer1_Tick;
             // 
             // Form1
             // 
@@ -184,5 +190,6 @@
         private DataGridViewTextBoxColumn LifeSpanProgress;
         private DataGridViewTextBoxColumn ProductProgress;
         private DataGridViewButtonColumn SellButton;
+        private System.Windows.Forms.Timer timer1;
     }
 }
