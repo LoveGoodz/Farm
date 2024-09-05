@@ -5,14 +5,6 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Farm", "Farm\Farm.csproj", "{AA7EE73A-064B-48F6-A627-EEFC84DE7DBB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Properties", "Properties", "{DEC4CBD5-7846-4AC2-8543-7EBEADFBF445}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\OneDrive\Masaüstü\chicken.png = ..\..\..\OneDrive\Masaüstü\chicken.png
-		..\..\..\OneDrive\Masaüstü\cow.png = ..\..\..\OneDrive\Masaüstü\cow.png
-		..\..\..\OneDrive\Masaüstü\goat.png = ..\..\..\OneDrive\Masaüstü\goat.png
-		..\..\..\OneDrive\Masaüstü\sheep.png = ..\..\..\OneDrive\Masaüstü\sheep.png
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
